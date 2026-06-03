@@ -82,7 +82,7 @@ export default function HomeTab({ data }: { data: AppData }) {
           {MEAL_TYPES.map(m => <div key={m} style={{ fontWeight: 600, color: 'var(--text2)', padding: '4px 0', fontSize: 10 }}>{m[0]}</div>)}
           {data.members.map(mem => {
             const color = getMemberColor(mem.name, data.members)
-            const todayCals = todayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + (m.calories || 0), 0)
+            const todayCals = todayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + ((m as any).calories || 0), 0)
             return (
               <React.Fragment key={mem.id}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 0' }}>
@@ -108,9 +108,9 @@ export default function HomeTab({ data }: { data: AppData }) {
           <div style={{ marginTop: 12, borderTop: '0.5px solid var(--border)', paddingTop: 12 }}>
             <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text2)', marginBottom: 8 }}>🔥 Today's Calories</div>
             {data.members.map(mem => {
-              const cals = todayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + (m.calories || 0), 0)
+              const cals = todayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + ((m as any).calories || 0), 0)
               if (!cals) return null
-              const maintenance = mem.maintenance_calories || 2000
+              const maintenance = (mem as any).maintenance_calories || 2000
               const diff = cals - maintenance
               const color = getMemberColor(mem.name, data.members)
               return (
