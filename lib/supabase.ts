@@ -9,6 +9,7 @@ export type Member = {
   id: string
   name: string
   color: string
+  maintenance_calories?: number | null
   created_at: string
 }
 
@@ -18,6 +19,7 @@ export type Meal = {
   meal_type: 'Breakfast' | 'Lunch' | 'Dinner' | 'Snacks'
   description: string | null
   photo_urls: string[]
+  calories?: number | null
   date: string
   created_at: string
 }

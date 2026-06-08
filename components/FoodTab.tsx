@@ -81,8 +81,8 @@ function MealCard({ meal, data, reload, showToast }: { meal: AppData['meals'][0]
             {meal.photo_urls.map((url, i) => <img key={i} src={url} alt="meal" style={{ width: 100, height: 100, borderRadius: 10, objectFit: 'cover', flexShrink: 0 }} />)}
           </div>
         )}
-        {meal.description && <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.5, marginBottom: (meal as any).calories ? 6 : 0 }}>{meal.description}</p>}
-        {(meal as any).calories && <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>🔥 {(meal as any).calories} calories</div>}
+        {meal.description && <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.5, marginBottom: meal.calories ? 6 : 0 }}>{meal.description}</p>}
+        {meal.calories && <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent)' }}>🔥 {meal.calories} calories</div>}
       </div>
       <div style={{ background: 'var(--surface2)', padding: '10px 14px', borderTop: '0.5px solid var(--border)' }}>
         {comments.map(c => (
@@ -119,7 +119,7 @@ function DashboardView({ data, selectedDate }: { data: AppData; selectedDate: st
           <tbody>
             {data.members.map(mem => {
               const done = MEAL_TYPES.map(mt => dayMeals.some(m => m.member_name === mem.name && m.meal_type === mt))
-              const cals = dayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + ((m as any).calories || 0), 0)
+              const cals = dayMeals.filter(m => m.member_name === mem.name).reduce((sum, m) => sum + (m.calories || 0), 0)
               const maintenance = (mem as any).maintenance_calories || 2000
               const over = cals > 0 && cals > maintenance
               return (
