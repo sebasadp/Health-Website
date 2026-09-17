@@ -7,6 +7,7 @@ export function Avatar({ name, color, size = 36 }: { name: string; color: string
       width: size, height: size, borderRadius: '50%', background: color,
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       fontSize: size * 0.36, fontWeight: 600, color: '#fff', flexShrink: 0,
+      boxShadow: '0 0 0 2px var(--surface)',
     }}>
       {getInitials(name)}
     </div>
@@ -18,24 +19,60 @@ export function Card({ children, style }: { children: React.ReactNode; style?: C
     <div style={{
       background: 'var(--surface)', borderRadius: 16,
       border: '0.5px solid var(--border)', padding: 16,
-      margin: '12px 16px', ...style,
+      margin: '12px 16px',
+      boxShadow: '0 1px 2px rgba(26,25,22,0.04), 0 2px 10px rgba(26,25,22,0.04)',
+      ...style,
     }}>
       {children}
     </div>
   )
 }
 
+export function SectionTitle({ icon, children, right }: { icon: string; children: React.ReactNode; right?: React.ReactNode }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+      <div style={{
+        width: 30, height: 30, borderRadius: 10, background: 'var(--surface2)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, flexShrink: 0,
+      }}>{icon}</div>
+      <h3 style={{ fontSize: 15, fontWeight: 600, flex: 1 }}>{children}</h3>
+      {right}
+    </div>
+  )
+}
+
+export function CalorieRing({ value, max, size = 46, color = 'var(--accent)' }: {
+  value: number; max: number; size?: number; color?: string
+}) {
+  const pct = Math.max(0, Math.min(value / max, 1))
+  const stroke = 5
+  const r = (size - stroke) / 2
+  const c = 2 * Math.PI * r
+  return (
+    <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--surface2)" strokeWidth={stroke} />
+        <circle
+          cx={size / 2} cy={size / 2} r={r} fill="none" stroke={color} strokeWidth={stroke}
+          strokeDasharray={c} strokeDashoffset={c * (1 - pct)} strokeLinecap="round"
+          style={{ transition: 'stroke-dashoffset .4s ease' }}
+        />
+      </svg>
+    </div>
+  )
+}
+
 export function Badge({ children, color = 'green' }: { children: React.ReactNode; color?: 'green' | 'red' | 'amber' | 'blue' }) {
   const colors = {
-    green: { bg: '#dcfce7', text: '#15803d' },
-    red: { bg: '#fee2e2', text: '#dc2626' },
-    amber: { bg: '#fef3c7', text: '#b45309' },
-    blue: { bg: '#dbeafe', text: '#1d4ed8' },
+    green: { bg: '#e7f6ec', text: 'var(--accent2)' },
+    red: { bg: '#fdeaea', text: '#b91c1c' },
+    amber: { bg: '#fdf3e0', text: '#a3620a' },
+    blue: { bg: '#e7f0fd', text: '#1d4ed8' },
   }
   return (
     <span style={{
       display: 'inline-flex', alignItems: 'center', gap: 4,
-      padding: '3px 8px', borderRadius: 20, fontSize: 12, fontWeight: 500,
+      padding: '3px 9px', borderRadius: 20, fontSize: 12, fontWeight: 600,
       background: colors[color].bg, color: colors[color].text,
     }}>
       {children}
@@ -64,6 +101,7 @@ export function Btn({
         fontFamily: 'inherit', fontSize: small ? 13 : 14, fontWeight: 500, cursor: 'pointer',
         background: variant === 'primary' ? 'var(--accent)' : 'transparent',
         color: variant === 'primary' ? '#fff' : 'var(--text2)',
+        boxShadow: variant === 'primary' ? '0 1px 3px rgba(22,163,74,0.25)' : 'none',
         transition: 'all .15s', ...style,
       }}
     >
@@ -124,6 +162,7 @@ export function SubTabs({ tabs, active, onChange }: {
             border: '0.5px solid var(--border)',
             background: active === t.id ? 'var(--accent)' : 'var(--surface)',
             color: active === t.id ? '#fff' : 'var(--text2)',
+            boxShadow: active === t.id ? '0 1px 3px rgba(22,163,74,0.25)' : 'none',
           }}
         >
           {t.label}
